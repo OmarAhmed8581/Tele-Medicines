@@ -1,0 +1,558 @@
+{% include 'Admin/Includes/header.html' %}
+<body class="" onload="set_Interval()">
+ <div id="content">
+  <div class="wrapper">
+     {% include 'Admin/Includes/menubar.html' %}
+    <div class="main-panel">
+      
+      {% include 'Admin/Includes/navbar.html' %}
+
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                  </div>
+                  <p class="card-category">Total Customer</p>
+                  <h3 id="customer_count" class="card-title">
+                    0
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="fas fa-user-tie"></i>
+                  </div>
+                  <p class="card-category">Total Employees</p>
+                  <h3 id="employee_count" class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="fa fa-shopping-basket"></i>
+                  </div>
+                  <p class="card-category">Total Product</p>
+                  <h3 id="stock_count" class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="fas fa-dolly"></i>
+                  </div>
+                  <p class="card-category">Total Supplier</p>
+                  <h3 id="supplier_count" class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-dark card-header-icon">
+                  <div class="card-icon" style="background-color: #7948C9;">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
+                  <p class="card-category">Total Sales</p>
+                  <h3 id="sales_count" class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+
+
+
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="card">
+
+                <div class="card-header card-header-tabs card-header-primary" style="background: linear-gradient(to bottom right, #cc66ff 0%, #cc00cc 100%);">
+                  <h4 class="card-title">Customer Stats</h4>
+                  <p class="card-category">New Customer, Recently added</p>
+                </div>
+
+
+
+             
+
+
+
+
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="profile">
+                    <table class="table table-hover">
+                    <thead class="text-warning">
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Date</th>
+                    </thead>
+                    <tbody>
+                      {% set count = namespace(value=1) %}
+                      {% for key, value in customer_view.items()  %}
+                      {% if count.value < 4 %}
+                      <tr>
+                        <td>{{ count.value }}</td>
+                        {% set count.value = count.value + 1 %}
+                        <td>{{ value['customer_name'] }}</td>
+                        <td>{{ value['phone_number'] }}</td>
+                        <td>{{ value['date'] }}</td>
+                      </tr>
+                      {% endif %}
+
+                      {% endfor %}
+                    
+                     
+                     
+                    </tbody>
+                  </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="col-lg-6 col-md-12">
+              <div class="card">
+                <div class="card-header card-header-warning" style="background: linear-gradient(to top left, #ffff66 4%, #ffcc00 100%);">
+                  <h4 class="card-title">Employees Stats</h4>
+                  <p class="card-category">New employees , Recently added</p>
+                </div>
+                <div class="card-body table-responsive">
+                  <table class="table table-hover">
+                    <thead class="text-warning">
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Salary</th>
+                      <th>Date of joining</th>
+                    </thead>
+                    <tbody>
+                      {% set count = namespace(value=1) %}
+                      {% for key, value in employees_view.items()  %}
+                      {% if count.value < 4 %}
+                      <tr>
+                        <td>{{ count.value }}</td>
+                        {% set count.value = count.value + 1 %}
+                        <td>{{ value['Name'] }}</td>
+                        <td>{{ value['Salary'] }}</td>
+                        <td>{{ value['Date of Join'] }}</td>
+                      </tr>
+                      {% endif %}
+
+                      {% endfor %}
+                     
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    //-----------  Configuration ----------------- //
+
+       var firebaseConfig = {
+          apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+          authDomain: "telemedicines-123c0.firebaseapp.com",
+          databaseURL: "https://telemedicines-123c0.firebaseio.com",
+          projectId: "telemedicines-123c0",
+          storageBucket: "telemedicines-123c0.appspot.com",
+          messagingSenderId: "490806536805",
+          appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+          measurementId: "G-QPEMY0KWSQ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+
+    // -----------------------------------------------------//  
+
+    function reset_password()
+    {
+
+       var email=document.getElementById("admin_email").innerHTML;
+       firebase.auth().sendPasswordResetEmail(email)
+        .then(function(result) {
+          // swal("Welcome to Tele Medinices ")
+          alert("Link has been send to your Gmail Account");
+
+          
+
+      }).catch(function(error) {
+          alert("Link did not send to your Gmail Account");
+
+      });
+
+      
+   }
+
+   
+    function set_Interval()
+    {
+       timer = setInterval(function() { 
+          
+
+        var CustomerRef = database.ref('Customer');
+
+
+        CustomerRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              let Customer_count=0
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             //    // console.log(value["Product Type"]);
+
+                // console.log(object.Count);
+                  Customer_count++;
+
+                
+              }
+
+              console.log(Customer_count);
+              document.getElementById("customer_count").innerHTML = String(Customer_count);
+            
+
+        });
+
+        var EmployeesRef = database.ref('Employee');
+        EmployeesRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              let Employees_count=0
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             //    // console.log(value["Product Type"]);
+
+                // console.log(object.Count);
+                  Employees_count++;
+                
+              }
+
+              console.log(Employees_count);
+              document.getElementById("employee_count").innerHTML = String(Employees_count);
+            
+
+        });
+
+        var stockRef = database.ref('Product');
+        stockRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              let stock_count=0
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             
+                  stock_count++;
+                
+              }
+
+              // console.log(Employees_count);
+              document.getElementById("stock_count").innerHTML = String(stock_count);
+            
+
+        });
+
+
+
+        var supplierRef = database.ref('Supplier');
+        supplierRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              let supplier_count=0
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             
+                  supplier_count++;
+                
+              }
+
+              // console.log(Employees_count);
+              document.getElementById("supplier_count").innerHTML = String(supplier_count);
+            
+
+        });
+
+
+        var orderRef = database.ref('Order');
+        orderRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              let order_count=0
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             
+              order_count++;
+                
+              }
+
+
+
+              var onlineorderRef = database.ref('Order');
+              onlineorderRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+
+             //  // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+             
+              order_count++;
+                
+              }
+
+
+              document.getElementById("sales_count").innerHTML = String(order_count);
+
+           });
+
+
+
+
+              // console.log(Employees_count);
+          
+            
+
+        });
+          
+
+       
+       
+
+
+
+      }, 1000); 
+
+    }
+    
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+    });
+ 
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+
+</script>  
+{% include 'Admin/Includes/footer.html' %}

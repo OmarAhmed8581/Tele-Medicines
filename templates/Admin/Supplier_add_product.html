@@ -1,0 +1,732 @@
+{% include 'Admin/Includes/header.html' %}
+<body class="">
+  <div class="wrapper ">
+    {% include 'Admin/Includes/menubar.html' %}
+    <div class="main-panel">
+
+
+      {% include 'Admin/Includes/navbar.html' %}
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Supplier Add Product </h4>
+
+                </div>
+                <div class="card-body">
+               
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating"> company Name </label>
+                          <input name="cname" id="company"  value="{{ company_name }}" type="text"  class="form-control" disabled>
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-4">
+
+                        <div class="form-group">
+
+                          <select name="product type" id="mySelect"  style="color: #aab3c2" class="form-control" onchange="myfuction()">
+
+                            <option value="Select Product Type"> Select Product Type <i class="fa fa-caret-down" aria-hidden="true"></i></option>
+                            {% for key, value in Item.items() %}
+                              <option  value="{{ value['Product Type']}}" >{{ value['Product Type'] }}</option>
+                            {% endfor %}
+
+                          </select>
+
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Product Name</label>
+                          <input id="myInput" name="name" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Price</label>
+                          <input id="price" name="Formular" maxlength="4" type="text" autocomplete="off"  class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Quantity</label>
+                          <input id="Quantity" name="Formular" maxlength="3" type="text" autocomplete="off"  class="form-control">
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Arrived Date</label>
+                          <input id="arrived_date" name="Formular" autocomplete="off"  type="date"  class="form-control">
+                        </div>
+                      </div>
+
+                      <button type="submit" onclick="Arrived_stock()" class="btn btn-primary pull-right">Add Product</button>
+                    <div class="clearfix"></div>
+
+
+                    </div>
+
+                </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+    </div>
+  
+
+
+  <div class="invoices">
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title"> Arrived Stock </h4>
+
+                </div>
+                <div class="card-body">
+
+                   <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                           Product Name 
+                        </th>
+                         <th>
+                           Price 
+                        </th>
+                        <th>
+                           Quantity
+                        </th>
+                        <th>
+                           Total Price
+                        </th>
+                       
+                        <th>
+                           Arrived date
+                        </th>
+                        <th>
+                          Action
+                        </th>
+                        
+                        <tbody id="tbody">
+                          {% for key, value in stock_item.items()  %}
+                            {% if value['supplier_id'] == Supplier_id %}
+                              {% if value['Status'] == 'not Arrived' %}
+                                {% for key1, value1 in product_result.items() %}
+                                  {% if key1 == value['product_id']  %}
+                                    <tr>
+                                    <td style="display: none">{{ key }}</td>
+                                    <td>{{ value1['Name'] }}</td>
+                                    <td>{{ value['company price'] }}</td>
+                                    <td>{{ value['Quantity'] }}</td>
+                                    <td>{{ value['Total price']}}</td>
+                                   
+                                    <td>{{ value['Arrived_date'] }}</td>
+                                    <td><input style='color: #fff; border:none; background-color: #F37153; width: 70px; cursor: pointer;'  type='submit' value='Arrived' class="btn3" name=''></td>
+                                    </tr>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+
+                            {% endif %}
+
+
+                          {% endfor %}
+                     
+                        </tbody>
+                      </thead>
+                    </table>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- Disable pervious date -->
+  <script type="text/javascript">
+    
+    $(function(){
+      var dtToday = new Date();
+      
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if(month < 10)
+          month = '0' + month.toString();
+      if(day < 10)
+          day = '0' + day.toString();
+      
+      var maxDate = year + '-' + month + '-' + day;
+      
+      $('#arrived_date').attr('min', maxDate);
+    });
+
+  </script>
+
+
+
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+    });
+  </script>
+  <script type="text/javascript">
+
+    //-----------  Configuration ----------------- //
+
+     var firebaseConfig = {
+        apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+        authDomain: "telemedicines-123c0.firebaseapp.com",
+        databaseURL: "https://telemedicines-123c0.firebaseio.com",
+        projectId: "telemedicines-123c0",
+        storageBucket: "telemedicines-123c0.appspot.com",
+        messagingSenderId: "490806536805",
+        appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+        measurementId: "G-QPEMY0KWSQ"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+
+
+    // -----------------------------------------------------//  
+
+
+
+    var fruits = [];
+    var combine=""
+    var product_id_list=[];
+    var product_name1=[]
+    function myfuction()
+    {
+
+        var Item_type = document.getElementById("mySelect").value;
+        var ItemtypeRef = database.ref('Item Type');
+        var item_id=""
+        ItemtypeRef.on('value', function(snapshot) {
+              const object=snapshot.val()
+              // console.log(object)
+             for (const [key, value] of Object.entries(object)) {
+                console.log(value["Product Type"]);
+                // console.log(Item_type);
+                if ( value["Product Type"] ==  Item_type )
+                {
+                    item_id=key
+                    // console.log(item_id);
+                }
+              }
+        });
+
+    
+
+        var productRef = database.ref('Product');
+       
+        var count=0;
+        productRef.on('value', function(snapshot) {
+          const object=snapshot.val()
+                // console.log(object)
+          for (const [key, value] of Object.entries(object)) {
+
+
+          if(item_id == value['Item type id'])
+          { 
+             
+              product_name1.push(value['Name'])
+              count++;
+
+
+          }
+               
+          }
+              
+        });
+
+        console.log(product_name1)
+         
+
+
+
+
+
+
+      }
+
+    function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false;}
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        a.setAttribute("onclick","testing()");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+          /*check if the item starts with the same letters as the text field value:*/
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+
+               
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                closeAllLists();
+            });
+            a.appendChild(b);
+          }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          /*If the arrow DOWN key is pressed,
+          increase the currentFocus variable:*/
+          currentFocus++;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          /*If the arrow UP key is pressed,
+          decrease the currentFocus variable:*/
+          currentFocus--;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          /*If the ENTER key is pressed, prevent the form from being submitted,*/
+          e.preventDefault();
+          if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+          }
+        }
+    });
+    function addActive(x) {
+      /*a function to classify an item as "active":*/
+      if (!x) return false;
+      /*start by removing the "active" class on all items:*/
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);
+      /*add class "autocomplete-active":*/
+      x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+      /*a function to remove the "active" class from all autocomplete items:*/
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      /*close all autocomplete lists in the document,
+      except the one passed as an argument:*/
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+  }
+
+
+
+  autocomplete(document.getElementById("myInput"), product_name1);
+
+
+  function Arrived_stock()
+  {
+
+
+    //  get value from user input
+
+    var item_type=document.getElementById("mySelect").value;
+    var name=document.getElementById("myInput").value;
+    var price=document.getElementById("price").value;
+    var Quantity=document.getElementById("Quantity").value;
+    var Arrived_date=document.getElementById("arrived_date").value;
+    var company=document.getElementById("company").value;
+
+    if ( item_type =="Select Product Type"  || name=="" || price =="" || Quantity == "" || Arrived_date == "" || company == "")
+    {
+      swal("fill the required Data")
+    }
+    else{
+
+
+    // console.log("company name",company);
+    var total=parseInt(price)*parseInt(Quantity)
+
+    var productRef = database.ref('Product');
+   var product_id=""
+   var item_id=""
+   productRef.on('value',function(snapshot)
+  {
+      const object=snapshot.val()
+         
+      for (const [key, value] of Object.entries(object)) {
+
+        if(value['Name']==name)
+        {
+          product_id=key;
+          item_id=value['Item type id'];
+        }
+
+      };
+  });
+
+
+
+   var supplierRef = database.ref('Supplier');
+   var supplier_id=""
+  
+   supplierRef.on('value',function(snapshot)
+  {
+      const object=snapshot.val()
+         
+      for (const [key, value] of Object.entries(object)) {
+        console.log("name",value['Company_name'])  
+        if(value['Company_name'] == company)
+        {
+
+          supplier_id=key;
+
+           data={
+            "product_id":String(product_id),
+            "Item_id":String(item_id),
+            "supplier_id":String(supplier_id),
+            "company price":String(price),
+            "Quantity":String(Quantity),
+            "expire_date":String(0),
+            "Sell price":String(0),
+            "Status":String("not Arrived"),
+            "Arrived_date":String(Arrived_date),
+            "Total price":String(total)
+
+          }
+          database.ref("Stock").push(data);
+                 
+        }
+
+      };
+  });
+
+
+
+  var stockRef = database.ref('Stock');
+  var stock_id1=""
+  
+   stockRef.on('value',function(snapshot)
+  {
+      const object=snapshot.val()
+         
+      for (const [key, value] of Object.entries(object)) {
+
+        stock_id1=key;
+
+        console.log("stock id",stock_id1);
+
+      }
+
+
+       
+
+
+
+
+  });
+
+
+
+   $("#tbody").append(
+        "<tr>" +
+        "<td style='display: none'>"+stock_id1+"</td>"+
+        "<td>"+ name+"</td>" +
+        "<td>"+price+"</td>" +
+        "<td>"+Quantity+"</td>" +
+        "<td>"+total+"</td>" +
+        "<td>"+Arrived_date+"</td>" +
+        " <td><input style='color: #fff; border:none; background-color: #F37153; width: 70px; cursor: pointer;'  type='submit' value='Arrived' class='btn3' name=''></td>"+
+        "</tr>"
+  );
+ }
+   
+
+
+
+  
+
+   
+
+
+
+            
+
+
+
+
+   
+
+  }
+  var stock_id1=""
+  var product_name=""
+  var company_price=""
+  var Quantity1=""
+
+  $('.table #tbody').on('click','.btn3',function(){
+  
+    var cursor=$(this).closest('tr');
+    stock_id1=cursor.find('td:eq(0)').text();
+    product_name=cursor.find('td:eq(1)').text();
+    company_price=cursor.find('td:eq(2)').text();
+    Quantity1=cursor.find('td:eq(3)').text();
+    var company=document.getElementById("company").value;
+
+    console.log("stock id",stock_id1)
+
+    var stockRef = database.ref('Stock');
+    var stock_id=""
+  
+   stockRef.on('value',function(snapshot)
+    {
+      const object=snapshot.val()
+         
+      for (const [key, value] of Object.entries(object)) {
+
+        if(key==stock_id1)
+        {
+          data={
+            "Status":String("Arrived")
+          }
+          database.ref('Stock').child(key).update(data);
+          let url = 'http://127.0.0.1:5000/supplier_arrived_product?company='+company+'&product_name='+product_name+'&company_price='+company_price+'&Quantity1='+Quantity1+'&stock_id='+stock_id1;
+          window.location=url
+
+        }
+
+      }
+
+    });
+
+
+  
+
+
+
+
+
+
+
+  });
+
+  </script>
+{% include 'Admin/Includes/footer.html' %}

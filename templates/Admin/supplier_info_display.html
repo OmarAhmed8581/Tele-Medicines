@@ -1,0 +1,497 @@
+
+{% include 'Admin/Includes/header.html' %}
+<body class="">
+  <div class="wrapper ">
+    {% include 'Admin/Includes/menubar.html' %}
+    <div class="main-panel">
+
+
+      {% include 'Admin/Includes/navbar.html' %}
+
+      
+
+
+  <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-10">
+              <div class="card">
+               <div class="card-header card-header-primary">
+                <h4 class="card-title" >Supplier Information</h4> 
+
+                <input style="color: #fff;margin-left: 700px; margin-top: -60px;background-color: purple;border-radius: 10px; border:none; width: 70px;cursor: pointer; " type="submit" value="Edit" onclick="Popup_edit()"  name="">
+<!--      Add customer button           -->
+                  
+
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table" id="myTable">
+                      <thead class=" text-primary">
+
+                         <tr>
+                              <th>
+                                  <i class="fas fa-file-signature"></i>
+                                  Name &nbsp;&nbsp;
+
+                                  <input style="border: none;background-color: #fff"  type="text" value={{ supplier_name }}  disabled>
+                              </th>
+                          </tr>
+                            
+                          <tr>
+                              <th>
+                                <i class="fas fa-building"></i>
+                                  Company Name &nbsp;&nbsp;
+                                  <input  type="text" value= {{ companyname}} style="border: none;background-color: #fff"  disabled>
+                              </th>
+                          </tr>
+                          <tr>
+                                <th>
+                                    <i class="fas fa-sort-numeric-up-alt"></i>
+                                    Age &nbsp;&nbsp;
+
+                                    <input  type="text" value={{ age}}  style="border: none;background-color: #fff" disabled>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <i class="fas fa-mobile-alt"></i>
+                                    Phone &nbsp;&nbsp;
+
+                                    <input  type="text" value={{ phone}} style="border: none;background-color: #fff; width: 700px;" disabled>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <i class="fas fa-user"></i>
+                                    Email &nbsp;&nbsp;
+
+                                    <input  type="text" value={{ email}} style="border: none;background-color: #fff" disabled>
+                                </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                         <i class="fas fa-map-marker"></i> 
+                                        Address &nbsp;&nbsp;
+
+                                        <input  type="text" value={{ address}} style="border: none;background-color: #fff" disabled>
+                                    </th>
+                                </tr>
+                                <tr>
+                                  <th>
+                                       <i class="fas fa-map-marker"></i> 
+                                      Status &nbsp;&nbsp;
+
+                                      <input  type="text" value={{ status}} style="border: none;background-color: #fff" disabled>
+                                  </th>
+                              </tr>
+                              <!-- <tr>
+                                <th>
+                                     <i class="fas fa-map-marker"></i> 
+                                    Employee ID &nbsp;&nbsp;
+
+                                    <input  type="text" value={{ employee_id}} style="border: none;background-color: #fff" disabled>
+                                </th>
+                            </tr> -->
+                            <!-- <tr>
+                              <th>
+                                   <i class="fas fa-map-marker"></i> 
+                                  Address &nbsp;&nbsp;
+
+                                  <input  type="text" value={{ address}} style="border: none;background-color: #fff" disabled>
+                              </th>
+                          </tr> -->
+
+
+                        </thead>
+                         
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+    </div>
+  </div>
+
+   <!-- supplier product add, information -->
+   <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-10">
+            <div class="card">
+             <div class="card-header card-header-primary" style="background: linear-gradient(to bottom right, #cc66ff 0%, #cc00cc 100%);">
+              <h4 class="card-title" >Product Information</h4>
+<!--      Add customer button           -->
+                
+
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table" id="myTable">
+                    <thead class=" text-primary">
+                     
+                      <th>
+                        <!-- <i class="fas fa-file-signature"></i> -->
+                        Product Name
+                      </th>
+                      <th>
+                          <!-- <i class="fas fa-file-signature"></i> -->
+                        Price
+                      </th>
+                      <th>
+                          <!-- <i class="fas fa-file-signature"></i> -->
+                        Formula
+                      </th>
+                    
+                      <th>
+                          <!-- <i class="fas fa-file-signature"></i> -->
+                        Quantity
+                      </th>
+                      <th>
+                          <!-- <i class="fas fa-file-signature"></i> -->
+                        Expiry date
+                      </th>
+                      
+                     
+                    </thead>
+                    <tbody>
+                      {% for key, value in Stock_result.items()  %}
+
+                      {% for key1, value1 in supplier_result.items()  %}
+
+                        {% if value1['Company_name'] == companyname %}
+                          {% if key1 == value['supplier_id'] %}
+
+                          {% for key2, value2 in product_result.items()  %}
+                            {% if key2 == value['product_id'] %}
+                                    {% if value['Status'] == 'Arrived' %}
+                                      <tr>
+                                      <td>
+                                        {{value2['Name']}}
+                                      </td>
+                                      <td>
+                                        {{value['company price']}}
+                                      </td>
+                                      <td>
+                                        {{value2['Formula']}}
+                                      </td>
+
+                                      <td>
+
+                                      {{value['Quantity']}}
+
+                                      </td>
+                                       <td>
+
+                                      {{value['expire_date']}}
+
+                                      </td>
+                                      </tr>
+                                {% endif %}
+                            {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        {% endif %}
+                        
+
+                      {% endfor %}
+
+
+                      {% endfor %}
+                    </tbody>
+                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+  </div>
+</div>
+
+
+<script type="text/javascript">
+     function  Popup_edit()
+        {
+          Swal.fire({
+            animation: "slide-from-top",
+            showConfirmButton: false,
+
+           
+           html:
+           '<form action="supplier_update_data" method="Post" '+
+            '<h4>Supplier Update Information </h4>'+
+            '<div class="form-group">'+
+                '<label>Name</label>'+
+                '<input autocomplete="off" id="name"  required name="user_name" type="text" pattern="([a-zA-Z]{3,20}\s*)+" maxlength="20" class="form-control"  value={{ supplier_name }}>' +
+
+            '</div>'+
+            '<div style="display:none;" class="form-group">'+
+                '<label>id</label>'+
+                '<input autocomplete="off" id="ID" required name="user_id" maxlength="2" type="text" class="form-control"  value={{ id }}>' +
+
+            '</div>'+
+             
+
+            '<div class="form-group">'+
+                '<label>Ages</label>'+
+                '<input autocomplete="off" id="ages" pattern="^(0|[1-9][0-9]*)$" required name="Age" maxlength="2" type="text" class="form-control"  value={{ age }}>' +
+
+            '</div>'+
+
+            '<div class="form-group">'+
+                '<label>phone Number</label>'+
+                '<input autocomplete="off" id="phone" required name="Phone" type="text" class="form-control"  value={{ phone }}>'+
+
+            '</div>'+
+
+
+            '<div  class="form-group">'+
+                '<label>Address</label>'+
+                '<input autocomplete="off" id="address" required name="address" type="text" class="form-control"  value={{ address }}>' +
+
+            '</div>'+
+
+
+
+
+
+            '<button type="submit"  class="btn btn-primary pull-right"style="font-weight:bold">update Supplier</button>'+
+           '</form>',
+
+      });
+
+
+    }
+  </script>
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+  	var col1=""
+  	var col2=""
+  	$('.table tbody').on('click','.btn1',function(){
+
+  		var cursor=$(this).closest('tr');
+  		col1=cursor.find('td:eq(0)').text();
+  		col2=cursor.find('td:eq(1)').text();
+  		
+  		let url = 'http://127.0.0.1:5000/add_Order?Customer_Name='+col1+'&NIC='+col2;
+  		window.location=url
+
+  		
+  		
+
+  	});
+
+  	function myFunction() {
+
+	  var input, filter, table, tr, td, i, txtValue;
+	  input = document.getElementById("myInput").value;
+
+	  filter = input;
+	  table = document.getElementById("myTable");
+	  tr = table.getElementsByTagName("tr");
+	  for (i = 0; i < tr.length; i++) {
+	    td = tr[i].getElementsByTagName("td")[2];
+	    if (td) {
+	      txtValue = td.textContent || td.innerText;
+	      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+	        tr[i].style.display = "";
+	      } else {
+	        tr[i].style.display = "none";
+	      }
+	    }       
+	  }
+	}
+
+ //  	fetch('http://127.0.0.1/add_Order?Cuatomer_Name='+col1)
+	// .then((response) => {
+	// 	return response.json();
+	// });
+
+
+  	
+
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+    });
+  </script>
+{% include 'Admin/Includes/footer.html' %}

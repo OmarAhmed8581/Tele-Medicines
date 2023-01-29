@@ -1,0 +1,302 @@
+
+{% include 'Employee/Includes/header.html' %}
+<body class="">
+  <div class="wrapper ">
+    {% include 'Employee/Includes/menubar.html' %}
+    <div class="main-panel">
+
+
+      {% include 'Employee/Includes/navbar.html' %}
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Customer Add</h4>
+
+                </div>
+                <div class="card-body">
+                  <form action="Emp_customer_get" method="post">
+                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Name</label>
+                          <input name="name" id=name type="text" maxlength="20" autocomplete="off"  class="form-control" required pattern="([a-zA-Z]{3,20}\s*)+">
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Phone</label>
+                          <input name="phone" id="phone" type="text" autocomplete="off"  class="form-control" required pattern="^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Age</label>
+                          <input name="age" id="age" maxlength="2" type="text" autocomplete="off"  class="form-control" required pattern="^(0|[1-9][0-9]*)$">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select id="gender" name="gender" class="form-control" required>
+                            <option value="Female">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Male">Female</option>
+                          </select>
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">CNIC</label>
+                          <input name="nic" id="nic" type="text" autocomplete="off"  class="form-control" required pattern='^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$'>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Address</label>
+                          <textarea id="address" name="address" autocomplete="off"  class="form-control" rows="3"  required></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary pull-right">Add Customer</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+     </div>
+  </div>
+
+  <script type="text/javascript">
+    //-----------  Configuration ----------------- //
+
+     var firebaseConfig = {
+             apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+             authDomain: "telemedicines-123c0.firebaseapp.com",
+             databaseURL: "https://telemedicines-123c0.firebaseio.com",
+             projectId: "telemedicines-123c0",
+             storageBucket: "telemedicines-123c0.appspot.com",
+             messagingSenderId: "490806536805",
+             appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+             measurementId: "G-QPEMY0KWSQ"
+           };
+           // Initialize Firebase
+           firebase.initializeApp(firebaseConfig);
+           var database = firebase.database();
+         
+     
+     // -----------------------------------------------------//  
+    var flat=true
+    // function NIC_compare()
+    // {
+    //   var nic=document.getElementById("nic").value;
+    //   var name=document.getElementById("name").value;
+    //   if(nic!="")
+    //   {
+    //     var customerRef = database.ref('Customer');
+    //     customerRef.on('value', function(snapshot) {
+    //       const object=snapshot.val()
+    //       for (const [key, value] of Object.entries(object)) {
+    //         if ( value['NIC'] == nic )
+    //         {
+    //           // swal("")
+    //           alert("NIC is already Exist")
+    //           document.getElementById("name").innerHtml=name
+              
+    //         }
+    //       }
+    //       if (flat==true)
+    //       {
+    //         let url = 'http://127.0.0.1:5000/Emp_customer_get?name='+name+"&nic="+nic+"&phone="+phone+"&age="+age+"&address="+address+"&gender="+gender;
+    //         window.location=url
+    //       }
+
+    //     });
+    //   }
+       
+    // }
+  </script>
+
+
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+    });
+  </script>
+{% include 'Employee/Includes/footer.html' %}

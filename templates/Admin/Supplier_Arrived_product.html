@@ -1,0 +1,377 @@
+
+{% include 'Admin/Includes/header.html' %}
+<body class="">
+  <div class="wrapper ">
+    {% include 'Admin/Includes/menubar.html' %}
+    <div class="main-panel">
+
+
+      {% include 'Admin/Includes/navbar.html' %}
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Supplier Arrived Product </h4>
+
+                </div>
+                <div class="card-body">
+              
+                    <div class="row">
+
+                     
+                        <div class="form-group" style="display: none;">
+                          <label> Stock Id </label>
+                          <input name="stock id" value="{{ stock_id }}" type="text"  class="form-control" id="stock id" disabled>
+                        </div>
+                     
+
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label> company Name </label>
+                          <input name="cname" id="company"  value="{{ company_name }}" type="text"  class="form-control" disabled>
+                        </div>
+                      </div>
+
+
+                       <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Product type Name</label>
+                          <input id="myInput" required name="name" value="{{ product_name }}" type="text" class="form-control" disabled>
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Product Name</label>
+                          <input id="myInput"  required name="name" value="{{ product_name }}" type="text" class="form-control" disabled>
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Company Price</label>
+                          <input id="price"  required  name="Formular" value="{{ company_price }}" type="text" class="form-control" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <div class="form-group">
+                          <label>Quantity</label>
+                          <input id="Quantity" required  name="Formular" value="{{ Quantity1 }}" type="text" class="form-control" disabled>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-1">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Sell Price</label>
+                          <input id="sell_price" required  name="Sell Price" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label>Expire Date</label>
+                          <input id="Expire_date" required  name="Expire Date" type="date" class="form-control">
+                        </div>
+                      </div>
+
+                      <button type="submit" onclick="Supplier_product()" class="btn btn-primary pull-right">Add Product Stock</button>
+
+
+                    <div class="clearfix"></div>
+
+
+
+
+                    </div>
+                  
+                </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+    </div>
+
+
+   <!-- Disable pervious date -->
+  <script type="text/javascript">
+    
+    $(function(){
+      var dtToday = new Date();
+      
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+      if(month < 10)
+          month = '0' + month.toString();
+      if(day < 10)
+          day = '0' + day.toString();
+      
+      var maxDate = year + '-' + month + '-' + day;
+      // alert(maxDate);
+      $('#Expire_date').attr('min', maxDate);
+    });
+
+  </script>
+
+
+  <script type="text/javascript">
+      //-----------  Configuration ----------------- //
+
+     var firebaseConfig = {
+        apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+        authDomain: "telemedicines-123c0.firebaseapp.com",
+        databaseURL: "https://telemedicines-123c0.firebaseio.com",
+        projectId: "telemedicines-123c0",
+        storageBucket: "telemedicines-123c0.appspot.com",
+        messagingSenderId: "490806536805",
+        appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+        measurementId: "G-QPEMY0KWSQ"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+
+
+    // -----------------------------------------------------//  
+
+    function Supplier_product()
+    {
+        var id=document.getElementById("stock id").value;
+        var sell_price=document.getElementById("sell_price").value;
+        var Expire_date=document.getElementById("Expire_date").value
+        console.log("sell price",sell_price);
+        console.log("Expire_date",Expire_date);
+        if(Expire_date!="" && sell_price != "")
+        {
+        let url = 'http://127.0.0.1:5000/supplier_add_stock?id='+id+'&sell_price='+sell_price+'&Expire_date='+Expire_date
+        window.location=url
+        
+        }
+        else
+        {
+          swal("fill the required Data")
+        }
+
+    }
+  </script>
+  
+
+
+
+
+
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+    });
+  </script>
+  <script type="text/javascript">
+
+    //-----------  Configuration ----------------- //
+
+     var firebaseConfig = {
+        apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+        authDomain: "telemedicines-123c0.firebaseapp.com",
+        databaseURL: "https://telemedicines-123c0.firebaseio.com",
+        projectId: "telemedicines-123c0",
+        storageBucket: "telemedicines-123c0.appspot.com",
+        messagingSenderId: "490806536805",
+        appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+        measurementId: "G-QPEMY0KWSQ"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+
+
+    // -----------------------------------------------------//  
+
+
+
+
+   
+
+
+
+            
+
+
+
+
+   
+
+  </script>
+{% include 'Admin/Includes/footer.html' %}

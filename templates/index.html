@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+
+
+  <link href="static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="static/assets/demo/demo.css" rel="stylesheet" />
+
+	  <!-- Sweet Alert Design -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!----------------------------->
+
+
+	 <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-database.js"></script>
+
+    <!-- Add additional services that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
+
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="static/assets/img/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/assets/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/assets/css/util.css">
+	<link rel="stylesheet" type="text/css" href="static/assets/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('static/assets/img/bg-01.jpg');">
+			<div class="wrap-login100">
+				<!-- <form class="login100-form validate-form"> -->
+					<span class="login100-form-logo">
+						<i class="zmdi zmdi-shopping-cart"></i>
+					</span>
+
+					<span class="login100-form-title p-b-34 p-t-27">
+						Tele Medicines
+					</span>
+
+					<div class="wrap-input100" data-validate = "Enter username">
+						<input id="email" class="input100" autocomplete="off"  type="text" name="email" placeholder="Email" required>
+						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<input id="password" class="input100"  type="password" name="password" placeholder="Password" required>
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+					<div class="contact100-form-checkbox">
+						
+						<label onclick="Popup_edit()" style="color: #fff;cursor: pointer;text-decoration: underline;" for="ckb1">
+							Forget Password
+						</label>
+					</div>
+
+					<div class="container-login100-form-btn">
+						
+						<button onclick="verification()" class="login100-form-btn"> Login </button>
+						
+					</div>
+
+					
+				<!-- </form> -->
+				
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+
+	<script type="text/javascript">
+
+	//-----------  Configuration ----------------- //
+
+     var firebaseConfig = {
+             apiKey: "AIzaSyAAZSDa4A3ytc-QbeIYCV86QPzlexS2HOg",
+             authDomain: "telemedicines-123c0.firebaseapp.com",
+             databaseURL: "https://telemedicines-123c0.firebaseio.com",
+             projectId: "telemedicines-123c0",
+             storageBucket: "telemedicines-123c0.appspot.com",
+             messagingSenderId: "490806536805",
+             appId: "1:490806536805:web:73a3b462b3e52df8c5748c",
+             measurementId: "G-QPEMY0KWSQ"
+           };
+           // Initialize Firebase
+           firebase.initializeApp(firebaseConfig);
+           var database = firebase.database();
+     	   
+     
+     // -----------------------------------------------------//
+
+
+     function verification()
+     {
+     	var email=document.getElementById("email").value;
+     	var password=document.getElementById("password").value;
+     	if (email != "" && password != "")
+     	{
+     		if (email=="admin@gmail.com" && password=="admin123")
+     		{
+				// swal("Welcome to Tele Medinices ")
+				let url = 'http://127.0.0.1:5000/get_login?email='+email+"&password="+password;
+      			window.location=url
+
+     		}
+     		else{
+
+     		 firebase.auth().signInWithEmailAndPassword(email, password)
+			  .then(function(result) {
+			    // swal("Welcome to Tele Medinices ")
+			    let url = 'http://127.0.0.1:5000/get_login?email='+email+"&password="+password;
+      			window.location=url
+
+			  }).catch(function(error) {
+			    swal("incorrect email and password ")
+			  });
+     		}
+     	 
+     	}
+     	else
+     	{
+     		swal("fill the required Data")
+     	}
+     	
+
+
+     }
+     
+		
+	</script>
+
+	<!-- forget password -->
+
+<script type="text/javascript">
+     function  Popup_edit()
+        {
+          Swal.fire({
+            animation: "slide-from-top",
+            showConfirmButton: false,
+
+
+           
+           html:
+            '<h4> Forget Password </h4>'+
+            '<div class="form-group" method="POST">'+
+             	'<form action="reset_password" >'+
+	            '<input autocomplete="off" placeholder="Email" name="confirm_Email" id="confirm_Email"  required  type="text" pattern="^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+com)$"  class="form-control" >' +
+
+
+
+	            '<button type="submit" class="btn btn-primary pull-right"style="font-weight:bold">Verify Email</button>'+
+	            '</form>'+
+
+            '</div>'
+           ,
+
+      });
+      $(".swal2-modal").css('background-color', '#B12EFF');
+      
+
+
+    }
+
+
+    function send_link_email(){
+    	var email=document.getElementById("confirm_Email").value;
+    	auth().sendPasswordResetEmail(email);
+    	Swal("Link has been sent into gmail Account Thanks you!");
+    }
+
+  </script>
+	<!-- End -->
+	
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/daterangepicker/moment.min.js"></script>
+	<script src="static/assets/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="static/assets/js/main.js"></script>
+
+  <!--   Core JS Files   -->
+  <script src="static/assets/js/core/jquery.min.js"></script>
+  <script src="static/assets/js/core/popper.min.js"></script>
+  <script src="static/assets/js/core/bootstrap-material-design.min.js"></script>
+  <script src="static/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!-- Plugin for the momentJs  -->
+  <script src="static/assets/js/plugins/moment.min.js"></script>
+  <!--  Plugin for Sweet Alert -->
+  <script src="static/assets/js/plugins/sweetalert2.js"></script>
+  <!-- Forms Validations Plugin -->
+  <script src="static/assets/js/plugins/jquery.validate.min.js"></script>
+  <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+  <script src="static/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+  <!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <script src="static/assets/js/plugins/bootstrap-selectpicker.js"></script>
+  <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+  <script src="static/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
+  <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
+  <script src="static/assets/js/plugins/jquery.dataTables.min.js"></script>
+  <!--  Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+  <script src="static/assets/js/plugins/bootstrap-tagsinput.js"></script>
+  <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+  <script src="static/assets/js/plugins/jasny-bootstrap.min.js"></script>
+  <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+  <script src="static/assets/js/plugins/fullcalendar.min.js"></script>
+  <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+  <script src="static/assets/js/plugins/jquery-jvectormap.js"></script>
+  <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+  <script src="static/assets/js/plugins/nouislider.min.js"></script>
+  <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+  <!-- Library for adding dinamically elements -->
+  <script src="static/assets/js/plugins/arrive.min.js"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chartist JS -->
+  <script src="static/assets/js/plugins/chartist.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="static/assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="static/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
+  <script src="static/assets/demo/demo.js"></script>
+
+
+</body>
+</html>

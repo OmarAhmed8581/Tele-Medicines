@@ -1,0 +1,192 @@
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="static/assets/img/sidebar-1.jpg">
+
+
+    <div class="logo"><a href="#" class="simple-text logo-normal">
+         <i class="fab fa-pied-piper" style="font-size: 35px;color:#820199;"></i><span style="font-family:'Times New Roman';font-size: 22px;color:#C63ADF" > Tele Medicines</span>
+        </a></div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item">
+           <i class="fas fa-users-cog"  style="margin-left: 30px;"></i>
+           <p> Welcome Admin </p>
+           <p id="admin_email" style="display: none;">{{ email }}</p>
+          </li>
+          {% if menu == "home" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Admin_dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="Admin_dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+          {% endif %}
+
+          {% if menu == "employee" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Employees_view">
+                <i class="fas fa-user-tie"></i>
+                <p>Employees</p>
+              </a>
+            </li>
+          {% else %}
+              <li class="nav-item">
+              <a class="nav-link" href="Employees_view">
+                <i class="fas fa-user-tie"></i>
+                <p>Employees</p>
+              </a>
+            </li>
+          {% endif %}
+
+          {% if menu == "customer" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Customer_view">
+                <i class="fas fa-user"></i>
+                <p>Customer</p>
+              </a>
+            </li>
+          {% else %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="Customer_view">
+                <i class="fas fa-user"></i>
+                <p>Customer</p>
+              </a>
+            </li>
+          {% endif %}
+
+
+
+          {% if menu ==  "product" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="product_view">
+                <i class="fas fa-capsules"></i>
+                <p>Product</p>
+              </a>
+            </li>
+          {% else %}
+              <li class="nav-item">
+              <a class="nav-link" href="product_view">
+                <i class="fas fa-user"></i>
+                <p>Product</p>
+              </a>
+            </li>
+          {% endif %}
+
+
+
+          {% if menu ==  "stock" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Stock_view">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Stock</p>
+              </a>
+            </li>
+          {% else %}
+              <li class="nav-item">
+              <a class="nav-link" href="Stock_view">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Stock</p>
+              </a>
+              </li>
+          {% endif %}
+
+
+
+
+
+          {% if menu == "supplier" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Supplier_view">
+                <i class="fas fa-dolly"></i>
+                <p>Suppliers</p>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="Supplier_view">
+                <i class="fas fa-dolly"></i>
+                <p>Suppliers</p>
+              </a>
+            </li>
+          {% endif %}
+
+
+          {% if menu == "order" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Order_view">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Offline Order</p>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="Order_view">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Offline Order</p>
+              </a>
+            </li>
+           {% endif %}
+
+            {% if menu == "online_order" %}
+            <li class="nav-item active">
+              <a class="nav-link" href="Online_Order_view">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Online Order</p>
+              </a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="Online_Order_view">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Online Order</p>
+              </a>
+            </li>
+           {% endif %}
+
+
+
+           {% if menu == "analysics" %}
+             <li class="nav-item active">
+              <a class="nav-link " href="Analysics">
+                <i class="fas fa-chart-line"></i>
+                <p>Analysics</p>
+              </a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                <a class="nav-link " href="Analysics">
+                  <i class="fas fa-chart-line"></i>
+                  <p>Analysics</p>
+                </a>
+              </li>
+            {% endif %}
+
+
+
+            {% if menu == "area" %}
+             <li class="nav-item active">
+              <a class="nav-link " href="area">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Area</p>
+              </a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                <a class="nav-link " href="area">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <p>Area</p>
+                </a>
+              </li>
+            {% endif %}
+
+
+
+        </ul>
+      </div>
+    </div>

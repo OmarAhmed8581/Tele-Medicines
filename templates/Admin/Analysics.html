@@ -1,0 +1,884 @@
+{% include 'Admin/Includes/header.html' %}
+<body>
+
+
+<div class="wrapper ">
+    {% include 'Admin/Includes/menubar.html' %}
+
+    <div class="main-panel">
+        {% include 'Admin/Includes/navbar.html' %}
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Analysis</h4>                 
+                </div>
+                <div class="card-body">
+                  <form action="add_customer" method="POST">
+                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <select name="age" class="form-control" id="ageid" onchange="ages_on_select()" required>
+                            <option value=" ">Select Age</option>
+                            <option value="1-10">1-10</option>
+                            <option value="10-15">11-15</option>
+                            <option value="15-25">16-25</option>
+                            <option value="25-35">26-35</option>
+                            <option value="35-45">36-45</option>
+                            <option value="45-55">46-55</option>
+                            <option value="55-65">56-65</option>
+                            <option value="75-85">66-75</option>
+                            <option value="75-85">76-85</option>
+                            <option value="85-99">86-100</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <select name="gender" class="form-control" onchange="gender_on_select()" id="genderid" required>
+                            <option value=" ">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </select>
+                        </div>
+                      </div>
+                      </form>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-5">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Analysis Perform Quantity</label>
+                            <input name="quantity" id="quantity" type="text" class="form-control" maxlength="2" autocomplete="off" pattern="^(0|[1-9][0-9]*)$" required >
+                          </div>
+                        </div>
+                        <div class="col-md-5">
+                          <div class="form-group">
+                            <select name="season" class="form-control" onchange="season_on_select()" id="seasonid" required>
+                              <option value=" ">Select Season</option>
+                              <option value="Autumn">Autumn</option>
+                              <option value="Spring">Spring</option>
+                              <option value="Winter">Winter</option>
+                              <option value="Summer">Summer</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    <button type="generate" onclick="Analysis()" class="btn btn-primary pull-right">Generate</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+     </div>
+  </div>
+        <div id="chartContainer_bar" style="height: 300px;width:64%;margin-top: 70px;margin-left: 20px"></div>
+      </div>
+  </div>
+<script src="static/assets/js/chart.js"></script>
+<script>
+  function getUnique(array){
+    var uniqueArray = [];
+
+        // Loop through array values
+        for(i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+        return uniqueArray;
+}
+function ages_on_select(){
+
+  document.getElementById("genderid").value=" ";
+  document.getElementById("seasonid").value=" ";
+
+}
+
+function gender_on_select(){
+document.getElementById("ageid").value=" ";
+document.getElementById("seasonid").value=" ";
+
+}
+
+function season_on_select(){
+document.getElementById("ageid").value=" ";
+document.getElementById("genderid").value=" ";
+
+}
+
+
+function max_value(data){
+  temp=[]
+  for(var i=0;i<data.length;i++){
+     temp.push(data[i].y);
+  }
+  console.log(temp)
+  a=temp.sort();
+  console.log(a)
+  temp=temp.reverse();
+  console.log(temp)
+  sorted_value=[];
+  for(var j=0;j<temp.length;j++){
+      
+      for(var i=0;i<data.length;i++){
+        if(temp[j]==data[i].y){
+
+          
+          sorted_value.push({y:temp[j],label:data[i].label});
+          break;
+          
+         
+        }
+        
+    }
+    
+  }
+  return sorted_value;
+  
+
+}
+
+function Analysis()
+{
+  var age=document.getElementById("ageid").value;
+  var quntity=document.getElementById("quantity").value;
+
+
+// phele if statment laga lo kahn pai?
+  var gender=document.getElementById("genderid").value;
+
+  var seasonid=document.getElementById("seasonid").value;
+
+  console.log(gender);
+  console.log(age);
+  //console.log(firstvalue);
+  if(quntity!=""){
+
+  if(age!=" "){
+
+    var ages_data=false;
+    var a=age.split("-");
+    console.log("b1"+a)
+    var firstvalue=a[0];
+    var secondvalue=a[1];
+    var customer_list=[];
+    var customerRef = database.ref('Customer');
+    var product_list=[];
+    var p_list=[]
+
+    var quantity1=0;
+    var quantity2=0;
+    if(quntity%2==0){
+      quantity1=parseInt(quntity)/2;
+      quantity2=parseInt(quntity)/2;
+    }
+    else{
+      quantity1=parseInt(parseInt(quntity)/2);
+      quantity2=parseInt(quntity)-parseInt(quantity1);
+    }
+
+    console.log("quantity1:"+quantity1)
+    console.log("quantity2:"+quantity2)
+    console.log("product_list"+product_list)
+    console.log("p_list"+p_list)
+
+
+    customerRef.on('value', function(snapshot) {
+        var customer_list=[];
+        const object=snapshot.val();
+        for (const [key, value] of Object.entries(object)) {
+
+          if(value["age"]>=firstvalue && value["age"]<=secondvalue)
+          {
+            console.log("a")
+            ages_data=true;
+            var orderRef = database.ref('Order');
+            orderRef.on('value', function(snapshot) {
+            const object1=snapshot.val();
+              for (const [key1, value1] of Object.entries(object1)) {
+                console.log("customer value:"+ key);
+                if( value1["Customer id"] == key ){
+
+                
+                  var orderdetailRef = database.ref('order detail');
+                  orderdetailRef.on('value', function(snapshot) {
+                    const object2=snapshot.val();
+                    for (const [key2, value2] of Object.entries(object2)) {
+                      if( value2["Order id"] == key1 ){
+
+
+                        var q=parseInt(value2["Quantity"]);
+
+                        for(var i=0;i<q;i++){
+                          product_list.push(value2["Product Name"])
+                        }
+
+
+                      }
+
+                    }
+                  });
+                }
+
+
+              }
+            
+             
+              console.log("Offline"+product_list)
+              
+            });
+
+
+
+          }
+
+        }
+
+        var OnlinecustomerRef = database.ref('onlinecustomerdetails');
+        OnlinecustomerRef.on('value', function(snapshot) {
+       
+        var customer_list=[];
+        const object=snapshot.val();
+        console.log(ages_data)
+        for (const [key, value] of Object.entries(object)) {
+
+          if(value["age"]>=firstvalue && value["age"]<=secondvalue)
+          {
+            console.log(ages_data)
+            console.log("a1")
+            ages_data=true;
+            var orderRef = database.ref('onlineorder');
+            orderRef.on('value', function(snapshot) {
+            const object1=snapshot.val();
+              for (const [key1, value1] of Object.entries(object1)) {
+                console.log("customer value:"+ key);
+                if( value1["customer_id"] == key ){
+
+                  var orderdetailRef = database.ref('onlineorderdetail');
+                  orderdetailRef.on('value', function(snapshot) {
+                    const object2=snapshot.val();
+                    for (const [key2, value2] of Object.entries(object2)) {
+                      if( value2["order_id"] == key1 ){
+
+
+                        var q1=parseInt(value2["quantity"]);
+
+                        for(var i=0;i<q1;i++){
+                          product_list.push(value2["product_Name"])
+                        }
+
+
+                      }
+
+                    }
+                  });
+                }
+               
+              }
+
+
+
+
+              p_list=getUnique(product_list);
+              data_point=[];
+
+              console.log("online"+product_list)
+
+              if(p_list.length>0)
+              {
+                for(var i=0;i<quantity1+quantity2;i++){
+
+
+                  if(i<p_list.length)
+                  {
+
+                    var count=0;
+                    for(var j=0;j<product_list.length;j++){
+                      if(product_list[j]==p_list[i]){
+                        count++;
+                      }
+                    }
+                    data_point.push({y:count,label:p_list[i]});
+                    } 
+                }
+              }
+             
+                console.log("data"+data_point)
+              });
+
+
+
+            }
+
+          }
+          console.log(ages_data)
+          if(ages_data==false){
+            swal("there is no ages customer data");
+          }
+          else{
+
+          
+            console.log("ages:"+data_point)
+            var chart = new CanvasJS.Chart("chartContainer_bar", {
+              animationEnabled: true,
+
+              title:{
+                text:"Age Analysics Perform"
+              },
+              axisX:{
+                interval: 1
+              },
+              axisY2:{
+                interlacedColor: "#D7BDE2",
+                gridColor: "#ab47bc",
+              },
+              data: [{
+                type: "bar",
+                name: "companies",
+                axisYType: "secondary",
+                color: "#ab47bc",
+                dataPoints: data_point
+              }]
+            });
+            chart.render();
+          }
+
+
+          });
+        
+
+
+
+      });
+
+
+
+       
+
+      
+      
+   
+  }
+  else if(gender!=" ")
+  {
+  
+    var quantity1=0;
+    var quantity2=0;
+    if(quntity%2==0){
+      quantity1=parseInt(quntity)/2;
+      quantity2=parseInt(quntity)/2;
+    }
+    else{
+      quantity1=parseInt(parseInt(quntity)/2);
+      quantity2=parseInt(quntity)-parseInt(quantity1);
+    }
+
+
+    console.log("quantity1:"+quantity1)
+    console.log("quantity2:"+quantity2)
+
+
+    var gender_data=false;
+    var customer_list=[];
+    var customerRef = database.ref('Customer');
+    var product_list=[];
+    data_point=[];
+
+    customerRef.on('value', function(snapshot) {
+        var customer_list=[];
+        const object=snapshot.val();
+        for (const [key, value] of Object.entries(object)) {
+
+          if(value["gender"] == gender)
+          {
+            gender_data=true;
+            console.log("female"+key);
+            var orderRef = database.ref('Order');
+            orderRef.on('value', function(snapshot) {
+            const object1=snapshot.val();
+              for (const [key1, value1] of Object.entries(object1)) {
+                console.log("customer value:"+ key);
+                if( value1["Customer id"] == key ){
+
+                  console.log("rder value:"+ key1);
+                  var orderdetailRef = database.ref('order detail');
+                  orderdetailRef.on('value', function(snapshot) {
+                    const object2=snapshot.val();
+                    for (const [key2, value2] of Object.entries(object2)) {
+
+
+                      if( value2["Order id"] == key1 ){
+
+                        console.log("abc")
+                        var q=parseInt(value2["Quantity"]);
+
+                        for(var i=0;i<q;i++){
+                          product_list.push(value2["Product Name"])
+                        }
+
+
+                      }
+
+                    }
+                  });
+                }
+              }
+
+           
+            
+              
+
+
+          });
+
+          }
+        }
+
+        var p_list=getUnique(product_list);
+
+           
+              
+              
+        console.log("p1 "+p_list)
+
+
+        if(gender_data==false){
+                    swal("there is no gender customer data");
+        }
+
+
+       var OnlinecustomerRef = database.ref('onlinecustomerdetails');
+        OnlinecustomerRef.on('value', function(snapshot) {
+       
+        var customer_list=[];
+        const object=snapshot.val();
+        for (const [key, value] of Object.entries(object)) {
+
+          if(value["gender"] == gender)
+          {
+            gender_data=true;
+            console.log("female"+key);
+            var orderRef = database.ref('onlineorder');
+            orderRef.on('value', function(snapshot) {
+            const object1=snapshot.val();
+              for (const [key1, value1] of Object.entries(object1)) {
+               
+                if( value1["customer_id"] == key ){
+
+                
+                  var orderdetailRef = database.ref('onlineorderdetail');
+                  orderdetailRef.on('value', function(snapshot) {
+                    const object2=snapshot.val();
+                    for (const [key2, value2] of Object.entries(object2)) {
+                      if( value2["order_id"] == key1 ){
+                        var q1=parseInt(value2["quantity"]);
+                        console.log("online order")
+                        for(var i=0;i<q1;i++){
+                          product_list.push(value2["product_Name"])
+                        }
+
+
+                      }
+
+                    }
+                  });
+                }
+              }
+              });
+
+}
+}
+var p_list=getUnique(product_list);
+
+
+// console.log("p1 "+p_list)
+          if(p_list.length>0)
+              {
+                for(var i=0;i<quantity1+quantity2;i++){
+
+                  if(i<p_list.length)
+                  {
+                    var count=0;
+
+                    for(var j=0;j<product_list.length;j++){
+                      if(product_list[j]==p_list[i]){
+                        count++;
+                      }
+                    }
+                    data_point.push({y:count,label:p_list[i]});
+                  }
+                }
+              }
+
+
+console.log("gender data1:"+data_point) 
+
+
+var chart = new CanvasJS.Chart("chartContainer_bar", {
+            animationEnabled: true,
+
+            title:{
+              text:"Gender Analysics Perform"
+            },
+            axisX:{
+              interval: 1
+            },
+            axisY2:{
+              interlacedColor: "#D7BDE2",
+              gridColor: "#ab47bc",
+            },
+            data: [{
+              type: "bar",
+              name: "companies",
+              axisYType: "secondary",
+              color: "#ab47bc",
+              dataPoints: data_point
+            }]
+          });
+          chart.render();
+
+
+
+
+});
+
+
+    });
+
+    
+
+    
+      
+
+  }
+else if(seasonid!=" "){
+
+  var quantity1=0;
+    var quantity2=0;
+    if(quntity%2==0){
+      quantity1=parseInt(quntity)/2;
+      quantity2=parseInt(quntity)/2;
+    }
+    else{
+      quantity1=parseInt(parseInt(quntity)/2);
+      quantity2=parseInt(quntity)-parseInt(quantity1);
+    }
+
+
+    console.log("quantity1:"+quantity1)
+    console.log("quantity2:"+quantity2)
+
+  data_point=[];
+  var season_data=false;
+  var order_id=[]
+  var product_list=[]
+  var orderRef = database.ref('Order');
+  orderRef.on('value', function(snapshot) {
+  const object1=snapshot.val();
+    for (const [key1, value1] of Object.entries(object1)) {
+      var date=value1['Date Time'];
+      var d=date.split('/');
+      console.log("date"+d[1]);
+      if(seasonid=="Winter"){
+        if(d[1]=="11" || d[1]=="12" ||d[1]=="1"||d[1]=="2"){
+          order_id.push(key1);
+        }
+
+
+      }
+      else if(seasonid=="Autumn")
+      {
+        if(d[1]=="3"||d[1]=="4")
+        {
+          order_id.push(key1);
+        }
+      }
+      else if(seasonid=="Spring")
+      {
+        if(d[1]=="5"||d[1]=="6")
+        {
+          order_id.push(key1);
+        }
+      }
+      else if(seasonid=="Summer")
+      {
+        if(d[1]=="7"||d[1]=="8"||d[1]=="9"||d[1]=="10")
+        {
+          order_id.push(key1);
+        }
+      }
+
+    }
+    console.log(order_id)
+    for(var i=0;i<order_id.length;i++){
+      var orderdetailRef = database.ref('order detail');
+      orderdetailRef.on('value', function(snapshot) {
+        const object2=snapshot.val();
+        for (const [key2, value2] of Object.entries(object2)) {
+          if( value2["Order id"] == order_id[i] ){
+            var q=parseInt(value2["Quantity"]);
+
+            for(var j=0;j<q;j++){
+              product_list.push(value2["Product Name"])
+            }
+          }
+
+          }
+      });
+    }
+
+
+
+    console.log("Offline order",product_list);
+    var p_list=getUnique(product_list);
+    console.log("product1",p_list);
+
+
+  var onlineorderRef = database.ref('onlineorder');
+  onlineorderRef.on('value', function(snapshot) {
+  console.log("o"+order_id);
+  order_id=[]
+  const object1=snapshot.val();
+    for (const [key1, value1] of Object.entries(object1)) {
+      console.log("a")
+      var date=value1['date_Time'];
+      var d=date.split('/');
+      console.log("date"+d[1]);
+      if(seasonid=="Winter"){
+        if(d[1]=="11" || d[1]=="12" ||d[1]=="1"||d[1]=="2"){
+          order_id.push(key1);
+        }
+
+
+      }
+      else if(seasonid=="Autumn")
+      {
+        if(d[1]=="3" || d[1]=="4")
+        {
+          console.log("b");
+          order_id.push(key1);
+        }
+      }
+      else if(seasonid=="Spring")
+      {
+        if(d[1]=="5"||d[1]=="6")
+        {
+          order_id.push(key1);
+        }
+      }
+      else if(seasonid=="Summer")
+      {
+        if(d[1]=="7"||d[1]=="8"||d[1]=="9"||d[1]=="10")
+        {
+          order_id.push(key1);
+        }
+      }
+
+    }
+    console.log("b"+order_id)
+    for(var i=0;i<order_id.length;i++){
+      var orderdetailRef = database.ref('onlineorderdetail');
+      orderdetailRef.on('value', function(snapshot) {
+        const object2=snapshot.val();
+        for (const [key2, value2] of Object.entries(object2)) {
+          if( value2["order_id"] == order_id[i] ){
+            var q1=parseInt(value2["quantity"]);
+            console.log("p1"+value2["product_Name"])
+            for(var j=0;j<q1;j++){
+
+              product_list.push(value2["product_Name"])
+            }
+          }
+
+          }
+      });
+    }
+
+
+
+
+
+    
+
+    console.log("Online order",product_list);
+    var p_list=getUnique(product_list);
+    console.log("product1 ",p_list);
+
+
+    if(p_list.length>0)
+    {
+
+      for(var i=0;i<quantity1+quantity2;i++){
+
+        var count=0;
+        if(i<p_list.length)
+        {
+          for(var j=0;j<product_list.length;j++){
+            if(product_list[j]==p_list[i]){
+              count++;
+            }
+          }
+          data_point.push({y:count,label:p_list[i]});
+        }
+      }
+    }
+
+    
+    var chart = new CanvasJS.Chart("chartContainer_bar", {
+          animationEnabled: true,
+
+          title:{
+            text:"Season Analysics Perform"
+          },
+          axisX:{
+            interval: 1
+          },
+          axisY2:{
+            interlacedColor: "#D7BDE2",
+            gridColor: "#ab47bc",
+          },
+          data: [{
+            type: "bar",
+            name: "companies",
+            axisYType: "secondary",
+            color: "#ab47bc",
+            dataPoints: data_point
+          }]
+        });
+        chart.render();
+
+
+
+});
+
+
+              
+      
+
+  });
+
+
+  
+         
+              
+       
+  
+
+
+  }
+  else{
+    swal("please select any one of the option")
+  }
+  }
+  else{
+    swal("please Enter Analysics perform quantity");
+  }
+
+
+
+
+
+
+}
+
+
+window.onload = function () {
+
+
+var orderRef = database.ref('order detail');
+var order_list=[];
+orderRef.on('value', function(snapshot) {
+      const object=snapshot.val();
+      for (const [key, value] of Object.entries(object)) {
+
+       var q=parseInt(value["Quantity"]);
+
+       for(var i=0;i<q;i++){
+         order_list.push(value["Product Name"])
+       }
+
+      }
+
+
+      console.log("offline order: "+order_list)
+
+
+      // Online Order
+
+      var onlineorderRef = database.ref('onlineorderdetail');
+      onlineorderRef.on('value', function(snapshot) {
+      const object=snapshot.val();
+      for (const [key, value] of Object.entries(object)) {
+
+       var q1=parseInt(value["quantity"]);
+
+       for(var i=0;i<q1;i++){
+         order_list.push(value["product_Name"])
+       }
+      }
+
+      console.log("Online order: "+order_list)
+      
+
+
+
+
+
+      console.log(order_list);
+     order_list1=getUnique(order_list);
+      data_point=[];
+      var i;
+     for(i = 0; i < order_list1.length; i++){
+       var count=0;
+       for(var j=0;j<order_list.length;j++){
+         if(order_list1[i]==order_list[j]){
+           count=count+1;
+
+         }
+
+       }
+       data_point.push({y:count,label:order_list1[i]});
+     }
+
+     var chart = new CanvasJS.Chart("chartContainer_bar", {
+       animationEnabled: true,
+
+       title:{
+         text:"Overall Analysics Perform"
+       },
+       axisX:{
+         interval: 1
+       },
+       axisY2:{
+         interlacedColor: "#D7BDE2",
+         gridColor: "#ab47bc",
+       },
+       data: [{
+         type: "bar",
+         name: "companies",
+         axisYType: "secondary",
+         color: "#ab47bc",
+         dataPoints: data_point
+       }]
+     });
+     chart.render();
+
+
+
+
+
+  });
+
+
+});
+
+
+
+}
+
+
+
+  </script>
+{% include 'Admin/Includes/footer.html' %}
